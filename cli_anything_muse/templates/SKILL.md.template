@@ -1,0 +1,78 @@
+---
+name: "{{ skill_name }}"
+description: "{{ description }}"
+---
+
+# {{ skill_name }}
+
+{{ intro }}
+
+## Prerequisites
+
+- **Python:** >= 3.10 (install inside a virtual environment; never use system `pip` under PEP 668)
+- **Real software dependency:** `{{ display_name }}` must be installed on the host.
+{% if system_install_cmd %}- **System install command:** `{{ system_install_cmd }}`
+{% endif %}
+## Installation (Venv)
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+## Basic Usage
+
+`{{ skill_name }} --help`
+
+## Command Groups
+
+{% for grp in groups %}
+### {{ grp.title }}
+
+| Command | Description |
+| --- | --- |
+{% for cmd in grp.commands %}
+| `{{ cmd.full_command }}` | {{ cmd.description }} |
+{% endfor %}
+
+{% endfor %}
+## State Management & Output Contract
+
+- **Session state:** {{ session_notes }}
+- **Dual output:** Human-readable by default; pass `--json` before the subcommand for machine-readable JSON on `stdout`.
+- **Errors & exit codes:** Exit `0` on success, non-zero on failure with diagnostics on `stderr`.
+
+{% if has_preview %}
+## Preview Support (`preview-bundle/v1`)
+
+- **Producer (`{{ skill_name }} preview ...`):** `recipes`, `capture`, `latest`, `diff`, `live start|push|status|stop`.
+- **Consumer (`cli-hub previews ...`):** Read-only `inspect`, `html`, `watch`, `open`.
+
+```bash
+{{ skill_name }} --json preview capture --recipe default
+cli-hub previews inspect <bundle_dir>
+```
+
+{% endif %}
+## Usage Examples
+
+{% for ex in examples %}
+### {{ ex.title }}
+
+```bash
+{{ ex.code }}
+```
+
+{% endfor %}
+## For Muse / AI Agents
+
+- Always use `--json`; check return codes (0 success, non-zero failure);
+  parse stderr on failure; use absolute paths; verify outputs exist
+  after export.
+- State: undo/redo up to 50 levels; project persists in JSON
+  session files.
+
+## Version
+
+`{{ version }}`
