@@ -10,9 +10,23 @@ A clean-room, Muse-native implementation of CLI-Anything that turns local codeba
 - **Stdlib-first service clients:** Generated service/API harnesses default to `urllib.request` with zero external HTTP dependencies unless a protocol (such as WebSockets) requires one.
 - **Strict verification discipline:** No claim without an actual test run; live-backend E2E tests fail rather than skip when the target software is missing.
 
-## Installation (Inside a Virtual Environment)
+## Installation
+
+### Simplest — install straight from GitHub
 
 ```bash
+python3 -m venv ~/.venvs/cli-anything-muse
+source ~/.venvs/cli-anything-muse/bin/activate
+pip install git+https://github.com/MeshDevo/cli-anything-muse.git
+cli-anything-muse --help
+cli-hub --help
+```
+
+### From a local clone
+
+```bash
+git clone https://github.com/MeshDevo/cli-anything-muse.git
+cd cli-anything-muse
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
